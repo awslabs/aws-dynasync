@@ -1,0 +1,1 @@
+declare module 'aws-quick-api-config';

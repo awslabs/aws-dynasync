@@ -1,0 +1,103 @@
+{
+    "tables": [
+        {
+            "tableName": "Dog",
+            "partitionKey": "dogId",
+            "auto": true,
+            "scan": true,
+            "attributes": {
+                "dogId": "ID!",
+                "breed": "String!",
+                "age": "Int!",
+                "isHousebroken": "Boolean",
+                "name": "String",
+                "description": "String"
+            },
+            "globalSecondaryIndexes": [
+                "name",
+                "age",
+                "breed",
+                "isHousebroken"
+            ]
+        },
+        {
+            "tableName": "Cat",
+            "partitionKey": "catId",
+            "auto": true,
+            "scan": true,
+            "attributes": {
+                "catId": "ID!",
+                "breed": "String!",
+                "age": "Int!",
+                "isHousebroken": "Boolean",
+                "name": "String",
+                "description": "String"
+            },
+            "globalSecondaryIndexes": [
+                "name",
+                "age",
+                "breed",
+                "isHousebroken"
+            ]
+        },
+        {
+            "tableName": "Event",
+            "partitionKey": "eventId",
+            "auto": true,
+            "attributes": {
+                "eventId": "ID!",
+                "eventName": "String!",
+                "startTime": "AWS_TIMESTAMP",
+                "endTime": "AWS_TIMESTAMP"
+            },
+            "globalSecondaryIndexes": [
+                {
+                    "partitionKey": "eventName",
+                    "sortKey": "startTime"
+                }
+            ]
+        },
+        {
+            "tableName": "EventSignup",
+            "partitionKey": "eventId",
+            "sortKey": "dogId",
+            "scan": true,
+            "attributes": {
+                "eventId": "String!",
+                "dogId": "String!",
+                "category": "String"
+            },
+            "globalSecondaryIndexes": [
+                {
+                    "partitionKey": "dogId",
+                    "sortKey": "eventId"
+                },
+                {
+                    "partitionKey": "category",
+                    "sortKey": "dogId"
+                }
+            ],
+            "localSecondaryIndexes": [ "category" ]
+        }
+    ],
+    "types": {
+        "enums": {
+            "Terms": [
+                "Term1",
+                "Term2",
+                "Term3"
+            ],
+            "Definitions": [
+                "Def1",
+                "Def2",
+                "DevOps",
+                "Mainframe",
+                "Database",
+                "Resiliency",
+                "Infrastructure",
+                "Connect",
+                "SAP"
+            ]
+        }
+    }
+}

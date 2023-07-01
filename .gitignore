@@ -1,0 +1,17 @@
+node_modules
+build
+.DS_Store
+dist/
+.env
+.secrets
+aws_lambda.bundle.*
+alt-*.*
+exp-*.*
+private.*
+.attach_pid*
+ProserveHireAppCDK/
+coverage/
+test.*
+lib/
+package-lock.json
+.gitlab-ci.yml

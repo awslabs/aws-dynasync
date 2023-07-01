@@ -1,0 +1,7 @@
+{
+    "app": "node src/app",
+    "output": "build/cdk.out",
+    "context": {
+        "aws-cdk-lib/aws-kms":"defaultKeyPolicies"
+    }
+}
