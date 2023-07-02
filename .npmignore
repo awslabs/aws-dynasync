@@ -11,3 +11,4 @@ test.ts
 .github/
 *.config.*
 assets/
+scripts/
