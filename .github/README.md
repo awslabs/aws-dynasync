@@ -1,5 +1,6 @@
 ## AWS Dynasync
 
+![Version](https://img.shields.io/npm/v/aws-dynasync?style=plastic)
 ![Build](https://img.shields.io/github/actions/workflow/status/awslabs/aws-dynasync/release.yml?style=plastic)
 ![License](https://img.shields.io/github/license/awslabs/aws-dynasync?style=plastic)
 
