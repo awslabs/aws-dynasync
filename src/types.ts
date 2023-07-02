@@ -1,13 +1,15 @@
-import { Attribute, TableProps } from "aws-cdk-lib/aws-dynamodb"
+import { Attribute, BillingMode, StreamViewType, TableClass, TableEncryption, TableProps } from "aws-cdk-lib/aws-dynamodb"
 import { KeyInstance } from "./key/instance"
 import { SchemaPrimaryKey } from "./key/primary"
 import { SchemaGlobalIndex } from "./key/global"
 import { SchemaLocalIndex } from "./key/local"
-import { ResourceProps } from "aws-cdk-lib"
+import { Duration, RemovalPolicy, ResourceProps } from "aws-cdk-lib"
 import { IUserPool } from "aws-cdk-lib/aws-cognito"
 import { DbTable } from "./db/table"
 import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha"
 import { DomainOptions, LogConfig, Resolver } from "aws-cdk-lib/aws-appsync"
+import { IKey } from "aws-cdk-lib/aws-kms"
+import { IStream } from "aws-cdk-lib/aws-kinesis"
 
 export interface DynasyncProps extends ResourceProps {
     userPool?: IUserPool
@@ -18,6 +20,7 @@ export interface DynasyncProps extends ResourceProps {
     userPoolDeny?: boolean
     apiProps?: AppsyncApiProps
     tableProps?: DynamoTableProps
+    deleteTablesWithStack?:boolean
 }
 
 export interface SchemaTable extends SchemaTableBase {
@@ -79,7 +82,24 @@ export interface SchemaLocal {
     indexName?: string
 }
 
-export type DynamoTableProps = Omit<TableProps, 'tableName' | 'partitionKey' | 'sortKey'>
+export interface DynamoTableProps {
+    readCapacity?: number
+    writeCapacity?: number
+    replicationTimeout?: Duration
+    replicationRegions?: string[]
+    billingMode?: BillingMode
+    pointInTimeRecovery?: boolean
+    tableClass?: TableClass
+    encryption?: TableEncryption
+    encryptionKey?: IKey
+    timeToLiveAttribute?: string
+    stream?: StreamViewType
+    waitForReplicationToFinish?: boolean
+    contributorInsightsEnabled?: boolean
+    deletionProtection?: boolean
+    kinesisStream?: IStream
+    removalPolicy?: RemovalPolicy
+}
 
 export type DynamoAttribute = "B" | "S" | "N";
 

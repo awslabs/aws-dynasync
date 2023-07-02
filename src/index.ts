@@ -1,4 +1,4 @@
-import { Resource } from "aws-cdk-lib";
+import { RemovalPolicy, Resource } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { DynasyncProps } from "./types";
 import { readFileSync, existsSync  } from 'fs';
@@ -42,6 +42,10 @@ export class Dynasync extends Resource {
             throw new Error("No tables provided. Cannot build API and Database without tables. Please configure parameters or provide 'dynasync.json' config file");
         }
         const userPool =  properties.userPool || new UserPool(scope, `${id}UserPool`);
+        if (properties.deleteTablesWithStack) {
+            if (!properties.tableProps) properties.tableProps = {};
+            properties.tableProps.removalPolicy = RemovalPolicy.DESTROY;
+        }
         this.appsync = new AppSyncStack(scope, `${id}AppSyncStack`, {
             config: {
                 userPool,

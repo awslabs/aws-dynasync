@@ -189,6 +189,18 @@ let app:App,
             });
         });
 
+        it("Sets Removal Policy", () => {
+            new Dynasync(stack, 'DynasyncConstruct', {
+                userPool,
+                configFile: pathToJson,
+                deleteTablesWithStack: true
+            });
+            template = Template.fromStack(stack);
+            template.hasResource("AWS::DynamoDB::Table", {
+                UpdateReplacePolicy: "Delete"
+            });
+        });
+
         it("Passes table props", () => {
             new Dynasync(stack, 'DynasyncConstruct', {
                 userPool,
