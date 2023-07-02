@@ -1,0 +1,13 @@
+.aws/
+node_modules
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+coverage/
+test/
+src/
+test.ts
+.git/
+.github/
+*.config.*
+assets/
