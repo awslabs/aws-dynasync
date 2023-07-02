@@ -398,48 +398,48 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 ## Interfaces
 
 ### DynasyncProps
-- tables **(required)**: *[SchemaTable](#schematable)[]* - An array of [SchemaTable](#schematable) objects that will be used first to construct the Amazon DynamoDB tables, then will connect those tables to the Aws Appsync GraphQL API.
-- configFile *(default: 'dynasync.json')*: *string* - Custom path to config file
+- **tables** **(required)**: *[SchemaTable](#schematable)[]* - An array of [SchemaTable](#schematable) objects that will be used first to construct the Amazon DynamoDB tables, then will connect those tables to the Aws Appsync GraphQL API.
+- **configFile** *(default: 'dynasync.json')*: *string* - Custom path to config file
 - userPool *(default: a basic user pool will be created)*: *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) - The Cognito User Pool that the AppSync API will use for authentication and authorization
-- types *(default: undefined)*: *[GraphQlTypeList](#graphqltypelist)* - Custom types in addition to the types and inputs created for each `DynamoDB` table
-- userPoolRegex *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
-- userPoolDeny *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
+- **types** *(default: undefined)*: *[GraphQlTypeList](#graphqltypelist)* - Custom types in addition to the types and inputs created for each `DynamoDB` table
+- **userPoolRegex** *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
+- **userPoolDeny** *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
 ### SchemaTable
-- tableName **(required)**: *string* - The name of the DynamoDB table to be created
-- partitionKey **(required)**: *string* - The attribute name of the table's partition key.
-- sortKey *(default: undefined)*: *string* - The attribute name of the table's sort key. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) for more on `DynamoDB` partition and sort keys.
-- attributes **(required)**: *object* - An object containing the attributes that will be stored in the table. The key must be the name of the attribute and the value must be the attribute's data type using GraphQL syntax. See [here](https://graphql.org/graphql-js/basic-types/) for more on GraphQL type syntax.
-- globalSecondaryIndexes *(default: undefined)*: *string | [SchemaGlobal](#schemaglobal)* - An array of partition key names or [SchemaGlobal](#schemaglobal) objects that define what the table's Global Secondary Indexes (GSI) will be. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) for more on Global Secondary Indexes.
-- localSecondaryIndexes *(default: undefined)*: *string | [SchemaLocal](#schemalocal)* - An array of sort key names or [SchemaLocal](#schemalocal) objects that define what the table's  Local Secondary Indexes (LSI) will be. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html) for more on Local Secondary Indexes.
-- scan *(default: false)*: *boolean* - If true, will add an Appsync API call that performs a scan on the entire table.
-- auto *(default: false)*: *boolean* - If true, will set table's Appsync API call to generate an auto ID when a new item is created.
-- subscription *(default: false)*: *boolean* - If true, API will create GraphQL subscriptions for the table.
-- query *(default: true)*: *boolean* - If true, API will create GraphQL queries for the table.
-- mutation *(default: true)*: *boolean* - If true, API will create GraphQL mutations for the table.
+- **tableName** **(required)**: *string* - The name of the DynamoDB table to be created
+- **partitionKey** **(required)**: *string* - The attribute name of the table's partition key.
+- **sortKey** *(default: undefined)*: *string* - The attribute name of the table's sort key. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) for more on `DynamoDB` partition and sort keys.
+- **attributes** **(required)**: *object* - An object containing the attributes that will be stored in the table. The key must be the name of the attribute and the value must be the attribute's data type using GraphQL syntax. See [here](https://graphql.org/graphql-js/basic-types/) for more on GraphQL type syntax.
+- **globalSecondaryIndexes** *(default: undefined)*: *string | [SchemaGlobal](#schemaglobal)* - An array of partition key names or [SchemaGlobal](#schemaglobal) objects that define what the table's Global Secondary Indexes (GSI) will be. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) for more on Global Secondary Indexes.
+- **localSecondaryIndexes** *(default: undefined)*: *string | [SchemaLocal](#schemalocal)* - An array of sort key names or [SchemaLocal](#schemalocal) objects that define what the table's  Local Secondary Indexes (LSI) will be. See [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html) for more on Local Secondary Indexes.
+- **scan** *(default: false)*: *boolean* - If true, will add an Appsync API call that performs a scan on the entire table.
+- **auto** *(default: false)*: *boolean* - If true, will set table's Appsync API call to generate an auto ID when a new item is created.
+- **subscription** *(default: false)*: *boolean* - If true, API will create GraphQL subscriptions for the table.
+- **query** *(default: true)*: *boolean* - If true, API will create GraphQL queries for the table.
+- **mutation** *(default: true)*: *boolean* - If true, API will create GraphQL mutations for the table.
 
 ### SchemaGlobal
-- partitionKey **(required)**: *string* - The attribute name of the secondary index's partition key.
-- sortKey *(default: undefined)*: *string* - The attribute name of the secondary index's sort key.
-- indexName *(default: auto-generated index name)*: *string* - The name of the Global Secondary Index
-- list *(default: if sort key exists, true; otherwise false)*: *boolean* - Boolean value to indicate whether a Global Secondary Index with just a partition key will return a list or not. If a sort key is provided this will always be true because the sort key would be needed to find a unique item, but if just a partition key is provided and the partition key will not return a single, unique item, then this *MUST* be set to `true`.
-- include *(default: undefined)*: *string* - A list of non-key table attribute names that will be included in the index. Providing a value for `include` will cause the index's [Attribute Projection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Projections) to be `Include`.
-- capacity *(default: undefined)*: *[Capacity](#capacity)* - Optionally declare the capacity for the index
+- **partitionKey** **(required)**: *string* - The attribute name of the secondary index's partition key.
+- **sortKey** *(default: undefined)*: *string* - The attribute name of the secondary index's sort key.
+- **indexName** *(default: auto-generated index name)*: *string* - The name of the Global Secondary Index
+- **list** *(default: if sort key exists, true; otherwise false)*: *boolean* - Boolean value to indicate whether a Global Secondary Index with just a partition key will return a list or not. If a sort key is provided this will always be true because the sort key would be needed to find a unique item, but if just a partition key is provided and the partition key will not return a single, unique item, then this *MUST* be set to `true`.
+- **include** *(default: undefined)*: *string* - A list of non-key table attribute names that will be included in the index. Providing a value for `include` will cause the index's [Attribute Projection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Projections) to be `Include`.
+- **capacity** *(default: undefined)*: *[Capacity](#capacity)* - Optionally declare the capacity for the index
 
 ### SchemaLocal
-- sortKey **(required)**: *string* - The attribute name of the secondary index's sort key.
-- indexName *(default: auto-generated index name)*: *string* - The name of the Local Secondary Index
-- include *(default: undefined)*: *string* - A list of non-key table attribute names that will be included in the index. Providing a value for `include` will cause the index's [Attribute Projection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html#LSI.Projections) to be `Include`.
+- **sortKey** **(required)**: *string* - The attribute name of the secondary index's sort key.
+- **indexName** *(default: auto-generated index name)*: *string* - The name of the Local Secondary Index
+- **include** *(default: undefined)*: *string* - A list of non-key table attribute names that will be included in the index. Providing a value for `include` will cause the index's [Attribute Projection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html#LSI.Projections) to be `Include`.
 
 ### GraphQlTypeList
-- types *(default: undefined)*: *object* - Custom GraphQL types where the key is the type name and the value is an object that maps the type's fields to GraphQL syntaxed types
-- interfaces *(default: undefined)*: *object* - Custom GraphQL interfaces where the key is the interface name and the value is an object that maps the interface's fields to GraphQL syntaxed types
-- inputs *(default: undefined)*: *object* - Custom GraphQL interfaces where the key is the input name and the value is an object that maps the input's fields to GraphQL syntaxed types
-- unions *(default: undefined)*: *object* - Custom GraphQL unions where the key is the union name and the value is an array of which types to use to form the union
-- enums *(default: undefined)*: *object* - Custom GraphQL enums where the key is the enum name and the value is an array of strings representing each value in the enum
+- **types** *(default: undefined)*: *object* - Custom GraphQL types where the key is the type name and the value is an object that maps the type's fields to GraphQL syntaxed types
+- **interfaces** *(default: undefined)*: *object* - Custom GraphQL interfaces where the key is the interface name and the value is an object that maps the interface's fields to GraphQL syntaxed types
+- **inputs** *(default: undefined)*: *object* - Custom GraphQL interfaces where the key is the input name and the value is an object that maps the input's fields to GraphQL syntaxed types
+- **unions** *(default: undefined)*: *object* - Custom GraphQL unions where the key is the union name and the value is an array of which types to use to form the union
+- **enums** *(default: undefined)*: *object* - Custom GraphQL enums where the key is the enum name and the value is an array of strings representing each value in the enum
 
 ### Capacity
-- read *(default: undefined)*: `number` - Read capacity for a global secondary index
-- write *(default: undefined)*: `number` - Write capacity for a global secondary index
+- **read** *(default: undefined)*: `number` - Read capacity for a global secondary index
+- **write** *(default: undefined)*: `number` - Write capacity for a global secondary index
 
 ## Security
 

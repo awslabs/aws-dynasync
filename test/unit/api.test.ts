@@ -138,11 +138,19 @@ let app:App,
             });
         });
 
-        it('Returns empty string when no schema declared', () => {
+        it('Fails when no schema declared', () => {
             const sync = new Dynasync(stack, 'DynasyncConstruct', {
                 userPool
             });
             const schema = sync.appsync.schema.root.declareSchema();
             expect(schema).toBeFalsy();
+
+            expect(() => {
+                const sync = new Dynasync(stack, 'DynasyncConstruct', {
+                    userPool
+                });
+                const schema = sync.appsync.schema.root.declareSchema();
+                expect(schema).toBeFalsy();
+            }).toThrowError("No tables provided. Cannot build API and Database without tables. Please configure parameters or provide 'dynasync.json' config file");
         });
     });
