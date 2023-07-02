@@ -385,7 +385,7 @@ app.synth()
 ```
 
 ## Cognito User Pools
-If you don't supply a Cognito User Pool when instantiating the `Dynasync` object, a basic one will be created. But since you'll most likely want to configure the User Pool yourself, it's highly advised to pass your own *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) as an argument:
+If you don't supply a Cognito User Pool when instantiating the `Dynasync` object, a basic one will be created. But since you'll most likely want to configure the User Pool yourself, it's highly advised to pass your own [IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) as an argument:
 ```ts
 const userPool = new UserPool(stack, "UserPool", {
   userPoolName: 'SyncPool',
@@ -402,7 +402,7 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 ### DynasyncProps
 - **tables** **(required)**: *[SchemaTable](#schematable)[]* - An array of [SchemaTable](#schematable) objects that will be used first to construct the Amazon DynamoDB tables, then will connect those tables to the Aws Appsync GraphQL API.
 - **configFile** *(default: 'dynasync.json')*: *string* - Custom path to config file
-- userPool *(default: a basic user pool will be created)*: *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) - The Cognito User Pool that the AppSync API will use for authentication and authorization
+- userPool *(default: a basic user pool will be created)*: *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html)* - The Cognito User Pool that the AppSync API will use for authentication and authorization
 - **types** *(default: undefined)*: *[GraphQlTypeList](#graphqltypelist)* - Custom types in addition to the types and inputs created for each `DynamoDB` table
 - **userPoolRegex** *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
 - **userPoolDeny** *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
