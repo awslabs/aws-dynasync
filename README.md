@@ -1,5 +1,8 @@
 ## AWS Dynasync
 
+![Build](https://img.shields.io/github/actions/workflow/status/awslabs/aws-dynasync/release.yml?style=plastic)
+![License](https://img.shields.io/github/license/awslabs/aws-dynasync?style=plastic)
+
 - [Installation](#installation)
 - [Basic Implementation](#basic-implementation)
 - [Custom Types](#custom-types)
@@ -470,7 +473,8 @@ Besides `tableName`, `partitionKey`, and `sortKey` which are set at the top leve
         waitForReplicationToFinish: true,
         contributorInsightsEnabled: false,
         deletionProtection: false,
-        kinesisStream: undefined
+        kinesisStream: undefined,
+        removalPolicy: RemovalPolicy.RETAIN
     }
 ```
 
