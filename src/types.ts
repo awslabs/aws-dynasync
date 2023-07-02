@@ -17,6 +17,7 @@ export interface DynasyncProps extends ResourceProps {
     userPoolRegex?: string
     userPoolDeny?: boolean
     apiProps?: AppsyncApiProps
+    tableProps?: DynamoTableProps
 }
 
 export interface SchemaTable extends SchemaTableBase {

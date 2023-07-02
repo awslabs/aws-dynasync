@@ -4,6 +4,8 @@ import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { pathToJson, passedTypes } from '../data';
 import { App, Stack } from 'aws-cdk-lib';
 import { DbTable } from '../../src/db/table';
+import { AppSyncStack } from '../../src/api';
+import { BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 
 let app:App,
     stack:Stack,
@@ -114,7 +116,7 @@ let app:App,
         });
 
         it('Can use subscriptions', () => {
-            const sync = new Dynasync(stack, 'DynasyncConstruct', {
+            new Dynasync(stack, 'DynasyncConstruct', {
                 userPool,
                 configFile: pathToJson,
                 tables: [{
@@ -147,4 +149,60 @@ let app:App,
                 expect(schema).toBeFalsy();
             }).toThrowError("No tables provided. Cannot build API and Database without tables. Please configure parameters or provide 'dynasync.json' config file");
         });
+
+        it('Throws when additional table props are passed with already instantiated DbTable instance', () => {
+            expect(() => {
+                const tables = [new DbTable(stack, {
+                        tableName: "Dog",
+                        partitionKey: "dogId",
+                        attributes: {
+                            "dogId": "ID!",
+                            "name": "String",
+                        }
+                    })
+                ];
+
+                new AppSyncStack(stack, "AppSyncStack", {
+                    config: {
+                        userPool: new UserPool(stack, 'Pool')
+                    },
+                    tables,
+                    tableProps: {
+                        billingMode: BillingMode.PAY_PER_REQUEST
+                    }
+                })
+            }).toThrowError(`Cannot pass additional table props when using already-instantiated DbTable instance for table Dog`)
+        });
+
+
+        it("Passes api props", () => {
+            const sync = new Dynasync(stack, 'DynasyncConstruct', {
+                userPool,
+                configFile: pathToJson,
+                apiProps: {
+                    xrayEnabled: false
+                }
+            });
+            template = Template.fromStack(stack);
+            template.hasResourceProperties("AWS::AppSync::GraphQLApi", {
+                XrayEnabled: false
+            });
+        });
+
+        it("Passes table props", () => {
+            new Dynasync(stack, 'DynasyncConstruct', {
+                userPool,
+                configFile: pathToJson,
+                tableProps: {
+                    billingMode: BillingMode.PAY_PER_REQUEST,
+                    deletionProtection: true
+                }
+            });
+            template = Template.fromStack(stack);
+            template.hasResourceProperties("AWS::DynamoDB::Table", {
+                BillingMode: "PAY_PER_REQUEST",
+                DeletionProtectionEnabled: true
+            });
+        });
+        
     });

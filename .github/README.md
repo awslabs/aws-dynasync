@@ -451,7 +451,7 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 - **write** *(default: undefined)*: `number` - Write capacity for a global secondary index
 
 ## Default Table Props
-Besides `tableName`, `partitionKey`, and `sortKey` which are set at the top level of the [SchemaTable](#schematable) object, any properties that can be passed to an AWS CDK DynamoDB L2 Construct can be overridden using the [SchemaTable](#schematable) `tableProps` field. If these properties aren't overridden, the table defaults are:
+Besides `tableName`, `partitionKey`, and `sortKey` which are set at the top level of each [SchemaTable](#schematable) object, any properties that can be passed to an AWS CDK DynamoDB L2 Construct can be overridden using the `tableProps` field of the [DynasyncProps](#dynasyncprops) object. If these properties aren't overridden, the table defaults are:
 ```ts
     const tableProps = {
         readCapacity: 5,
@@ -474,12 +474,13 @@ Besides `tableName`, `partitionKey`, and `sortKey` which are set at the top leve
         waitForReplicationToFinish: true,
         contributorInsightsEnabled: false,
         deletionProtection: false,
-        kinesisStream: undefined
+        kinesisStream: undefined,
+        removalPolicy: RemovalPolicy.RETAIN
     }
 ```
 
 ## Default API Props
-Besides `name`, `schema`, and `authorizationConfig` which are set using values passed at the top level of the [DynasyncProps](#dynasyncprops) object, any properties that can be passed to an AWS CDK Appsync GraphQL API L2 Construct can be overridden using the [DynasyncProps](#dynasyncprops) `apiProps` field. If these properties aren't overridden, the table defaults are:
+Besides `name`, `schema`, and `authorizationConfig` which are set using values passed at the top level of the [DynasyncProps](#dynasyncprops) object, any properties that can be passed to an AWS CDK Appsync GraphQL API L2 Construct can be overridden using the `apiProps` field of the [DynasyncProps](#dynasyncprops) object. If these properties aren't overridden, the api defaults are:
 ```ts
     const apiProps = {
         xrayEnabled: true

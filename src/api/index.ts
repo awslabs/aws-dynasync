@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import { AppSyncSchema } from './schema';
 import { getName, validateTable } from '../util';
 import { DbTable } from '../db/table';
-import { SchemaTable, GraphQlTypeList, AppsyncApiProps } from '../types';
+import { SchemaTable, GraphQlTypeList, AppsyncApiProps, DynamoTableProps } from '../types';
 import { 
     GraphqlApi, 
     ISchema,
@@ -17,6 +17,7 @@ export interface AppSyncStackProps {
     tables: (DbTable | SchemaTable)[]
     schemaTypes?: GraphQlTypeList
     apiProps?: AppsyncApiProps
+    tableProps?: DynamoTableProps
 }
 
 export class AppSyncStack {
@@ -32,19 +33,29 @@ export class AppSyncStack {
     ) {
         this.schema = new AppSyncSchema();
         this.tables = props.tables.reduce((acc, table) => {
-            const inst:DbTable = (table instanceof DbTable) ? table : 
-                new DbTable(this.scope, table, (table as SchemaTable).prefix);
+            let inst:DbTable
+            if (table instanceof DbTable) {
+                if (this.props.tableProps) throw new Error(`Cannot pass additional table props when using already-instantiated DbTable instance for table ${table.tableName}`);
+                inst = table;
+            } else {
+                if (props.tableProps) table.tableProps = {
+                    ...table.tableProps || {},
+                    ...props.tableProps
+                }
+                inst = new DbTable(this.scope, table, (table as SchemaTable).prefix);
+            }
             const res = this.addTableSchema(inst);
             if (res) acc.push(res);
             return acc;
         }, [] as DbTable[]);
         this.schema.initTypes(this.props.schemaTypes);
-        this.api = this.getApi(this.schema, props.config);
+        this.api = this.getApi(this.schema, props.config, props.apiProps);
         this.tables = this.tables.map(table => this.addTableApi(table));
     }
 
-    protected getApi(schema: ISchema, userPoolConfig: UserPoolConfig): GraphqlApi {
+    protected getApi(schema: ISchema, userPoolConfig: UserPoolConfig, apiProps?: AppsyncApiProps): GraphqlApi {
         const nm = getName(this.id, 'GraphQlApi');
+        console.log("API PROPS", apiProps);
         return new GraphqlApi(this.scope, nm, {
             name: nm,
             schema,
@@ -55,7 +66,7 @@ export class AppSyncStack {
                 }
             },
             xrayEnabled: true,
-            ...(this.props.apiProps || {})
+            ...(apiProps || {})
         });
     }
 

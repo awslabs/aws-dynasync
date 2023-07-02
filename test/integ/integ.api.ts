@@ -1,4 +1,4 @@
-import { App, Stack } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Dynasync } from '../../src'; 
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { pathToJson, integPassedTypes } from '../data';
@@ -20,6 +20,9 @@ const userPool = new UserPool(stack, "UserPool", {
 const sync = new Dynasync(stack, 'DynasyncConstruct', {
   userPool,
   configFile: pathToJson,
+  tableProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
   ...integPassedTypes
 });
 sync.addToSchema('union CatAndFish = Cat | Fish');

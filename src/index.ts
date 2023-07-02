@@ -50,7 +50,8 @@ export class Dynasync extends Resource {
             },
             tables: properties.tables || [],
             schemaTypes: properties.types || {},
-            apiProps: properties.apiProps
+            apiProps: properties.apiProps,
+            tableProps: properties.tableProps
         });
         this.tables = this.appsync.tables;
     }
