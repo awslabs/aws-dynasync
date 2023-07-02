@@ -1,7 +1,6 @@
 ## AWS Dynasync
 
 ![Build](https://img.shields.io/github/actions/workflow/status/awslabs/aws-dynasync/release.yml?style=plastic)
-![License](https://img.shields.io/github/license/awslabs/aws-dynasync?style=plastic)
 
 - [Installation](#installation)
 - [Basic Implementation](#basic-implementation)
