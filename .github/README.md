@@ -7,6 +7,7 @@
     - [Config File](#config-file)
     - [Index.ts](#indexts)
     - [Schema.graphql](#schemagraphql)
+    - [DynamoDB Tables](#dynamodb-tables)
 - [Interfaces](#interfaces)
     - [DynasyncProps](#dynasyncprops)
     - [SchemaTable](#schematable)
@@ -14,6 +15,8 @@
     - [SchemaLocal](#schemalocal)
     - [GraphQlTypeList](#graphqltypelist)
     - [Capacity](#capacity)
+- [Default Table Properties](#default-table-props)
+- [Default API Properties](#default-api-props)
 - [Security](#security)
 - [License](#license)
 
@@ -382,9 +385,6 @@ app.synth()
     }
 ```
 
-### DynamoDB Tables
-![DynamoDB Tables](/assets/images/db.png)
-
 ## Cognito User Pools
 If you don't supply a Cognito User Pool when instantiating the `Dynasync` object, a basic one will be created. But since you'll most likely want to configure the User Pool yourself, it's highly advised to pass your own *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) as an argument:
 ```ts
@@ -398,6 +398,9 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 });
 ```
 
+### DynamoDB Tables
+![DynamoDB Tables](/assets/images/db.png)
+
 ## Interfaces
 
 ### DynasyncProps
@@ -407,6 +410,8 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 - **types** *(default: undefined)*: *[GraphQlTypeList](#graphqltypelist)* - Custom types in addition to the types and inputs created for each `DynamoDB` table
 - **userPoolRegex** *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
 - **userPoolDeny** *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
+- **tableProps** *(default: [Default API Props](#default-api-props))* - Override default properties of the CDK Appsync GraphQLAPI construct used to create the API
+
 ### SchemaTable
 - **tableName** **(required)**: *string* - The name of the DynamoDB table to be created
 - **partitionKey** **(required)**: *string* - The attribute name of the table's partition key.
@@ -419,6 +424,7 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 - **subscription** *(default: false)*: *boolean* - If true, API will create GraphQL subscriptions for the table.
 - **query** *(default: true)*: *boolean* - If true, API will create GraphQL queries for the table.
 - **mutation** *(default: true)*: *boolean* - If true, API will create GraphQL mutations for the table.
+- **tableProps** *(default: [Default Table Props](#default-table-props))* - Override default properties of the CDK DynamoDB Table construct used to create the tables
 
 ### SchemaGlobal
 - **partitionKey** **(required)**: *string* - The attribute name of the secondary index's partition key.
@@ -443,6 +449,44 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 ### Capacity
 - **read** *(default: undefined)*: `number` - Read capacity for a global secondary index
 - **write** *(default: undefined)*: `number` - Write capacity for a global secondary index
+
+## Default Table Props
+Besides `tableName`, `partitionKey`, and `sortKey` which are set at the top level of the [SchemaTable](#schematable) object, any properties that can be passed to an AWS CDK DynamoDB L2 Construct can be overridden using the [SchemaTable](#schematable) `tableProps` field. If these properties aren't overridden, the table defaults are:
+```ts
+    const tableProps = {
+        readCapacity: 5,
+        writeCapacity: 5,
+        replicationTimeout: Duration.minutes(30),
+        replicationRegions: undefined,
+        // If replicationRegions exist
+        billingMode: BillingMode.PAY_PER_REQUEST,
+        // If no replicationRegions exist
+        billingMode: BillingMode.PROVISIONED,
+        pointInTimeRecovery: true,
+        tableClass: TableClass.STANDARD,
+        encryption: TableEncryption.DEFAULT,
+        encryptionKey: undefined,
+        timeToLiveAttribute: undefined,
+        // If replicationRegions exist
+        stream: StreamViewType.NEW_AND_OLD_IMAGES,
+        // If no replicationRegions exist
+        stream:undefined,
+        waitForReplicationToFinish: true,
+        contributorInsightsEnabled: false,
+        deletionProtection: false,
+        kinesisStream: undefined
+    }
+```
+
+## Default API Props
+Besides `name`, `schema`, and `authorizationConfig` which are set using values passed at the top level of the [DynasyncProps](#dynasyncprops) object, any properties that can be passed to an AWS CDK Appsync GraphQL API L2 Construct can be overridden using the [DynasyncProps](#dynasyncprops) `apiProps` field. If these properties aren't overridden, the table defaults are:
+```ts
+    const apiProps = {
+        xrayEnabled: true
+        logConfig: undefined
+        domainName: undefined
+    }
+```
 
 ## Security
 

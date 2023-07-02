@@ -1,7 +1,8 @@
 import { 
     BillingMode, 
     Table, 
-    StreamViewType 
+    StreamViewType, 
+    TableProps
 } from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 import { 
@@ -27,12 +28,8 @@ export class DbTable implements SchemaTableInstance {
     construct: Table
     api?: DbApi
     props: DynamoTableProps = {
-        billingMode: BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecoveryEnabled: true,
-        timeToLiveSpecification: 'TTL',
-        streamSpecification: StreamViewType.NEW_AND_OLD_IMAGES,
-        ...(this.schemaTable.props),
-        tableName: this.tableName
+        pointInTimeRecovery: true,
+        ...(this.schemaTable.tableProps || {}),
     }
     localSecondaryIndexes: SchemaLocalIndex[] = this.setLocalKeys(this.schemaTable.localSecondaryIndexes)
     globalSecondaryIndexes: SchemaGlobalIndex[] = this.setGlobalKeys(this.schemaTable.globalSecondaryIndexes)
@@ -49,13 +46,11 @@ export class DbTable implements SchemaTableInstance {
         public readonly schemaTable: SchemaTable, 
         public readonly label?:string
     ) {
+
         this.construct = new Table(scope, this.tableName, {
+            ...this.props,
+            ...this.primaryKey.keySchema,
             tableName: this.tableName,
-            billingMode: this.props.billingMode,
-            pointInTimeRecovery: this.props.pointInTimeRecoveryEnabled,
-            timeToLiveAttribute: this.props.timeToLiveSpecification,
-            stream: this.props.streamSpecification,
-            ...this.primaryKey.keySchema
         }); 
         if (this.globalSecondaryIndexes)
             this.globalSecondaryIndexes.forEach(ind => this.construct.addGlobalSecondaryIndex(ind.props),this);

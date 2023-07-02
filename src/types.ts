@@ -1,6 +1,5 @@
-import { Attribute, BillingMode, StreamViewType } from "aws-cdk-lib/aws-dynamodb"
+import { Attribute, TableProps } from "aws-cdk-lib/aws-dynamodb"
 import { KeyInstance } from "./key/instance"
-import { Topic } from "aws-cdk-lib/aws-sns"
 import { SchemaPrimaryKey } from "./key/primary"
 import { SchemaGlobalIndex } from "./key/global"
 import { SchemaLocalIndex } from "./key/local"
@@ -8,7 +7,7 @@ import { ResourceProps } from "aws-cdk-lib"
 import { IUserPool } from "aws-cdk-lib/aws-cognito"
 import { DbTable } from "./db/table"
 import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha"
-import { Resolver } from "aws-cdk-lib/aws-appsync"
+import { DomainOptions, LogConfig, Resolver } from "aws-cdk-lib/aws-appsync"
 
 export interface DynasyncProps extends ResourceProps {
     userPool?: IUserPool
@@ -17,6 +16,7 @@ export interface DynasyncProps extends ResourceProps {
     types?: GraphQlTypeList
     userPoolRegex?: string
     userPoolDeny?: boolean
+    apiProps?: AppsyncApiProps
 }
 
 export interface SchemaTable extends SchemaTableBase {
@@ -26,6 +26,7 @@ export interface SchemaTable extends SchemaTableBase {
     globalSecondaryIndexes?: (string | SchemaGlobal | SchemaGlobalIndex)[]
     localSecondaryIndexes?: (string | SchemaLocal | SchemaLocalIndex)[]
     prefix?: string
+    tableProps?: DynamoTableProps
 }
 
 export interface SchemaTableInstance extends Required<SchemaTableBase> {
@@ -77,19 +78,7 @@ export interface SchemaLocal {
     indexName?: string
 }
 
-export interface DynamoTableProps {
-    readonly tableName?: string;
-
-    readonly billingMode?: BillingMode;
-
-    readonly pointInTimeRecoveryEnabled?: boolean;
-
-    readonly timeToLiveSpecification?: string;
-
-    readonly streamSpecification?: StreamViewType;
-
-    readonly alertTopic? : Topic;
-}
+export type DynamoTableProps = Omit<TableProps, 'tableName' | 'partitionKey' | 'sortKey'>
 
 export type DynamoAttribute = "B" | "S" | "N";
 
@@ -131,4 +120,10 @@ export interface IntermediateTypeOptions extends IntermediateTypeBase {
 
 export interface IntermediateTypeList {
     [name:string]: IntermediateTypeProps | SchemaObject
+}
+
+export interface AppsyncApiProps {
+    logConfig?: LogConfig
+    xrayEnabled?: boolean
+    domainName?: DomainOptions
 }

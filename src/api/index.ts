@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import { AppSyncSchema } from './schema';
 import { getName, validateTable } from '../util';
 import { DbTable } from '../db/table';
-import { SchemaTable, GraphQlTypeList } from '../types';
+import { SchemaTable, GraphQlTypeList, AppsyncApiProps } from '../types';
 import { 
     GraphqlApi, 
     ISchema,
@@ -16,6 +16,7 @@ export interface AppSyncStackProps {
     config: UserPoolConfig
     tables: (DbTable | SchemaTable)[]
     schemaTypes?: GraphQlTypeList
+    apiProps?: AppsyncApiProps
 }
 
 export class AppSyncStack {
@@ -53,7 +54,8 @@ export class AppSyncStack {
                     userPoolConfig
                 }
             },
-            xrayEnabled: true
+            xrayEnabled: true,
+            ...(this.props.apiProps || {})
         });
     }
 
