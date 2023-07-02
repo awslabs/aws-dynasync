@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import { AppSyncSchema } from './schema';
 import { getName, validateTable } from '../util';
 import { DbTable } from '../db/table';
-import { SchemaTable } from '../types';
+import { SchemaTable, GraphQlTypeList } from '../types';
 import { 
     GraphqlApi, 
     ISchema,
@@ -11,12 +11,11 @@ import {
     UserPoolConfig
 } from 'aws-cdk-lib/aws-appsync';
 import { IUserPool } from 'aws-cdk-lib/aws-cognito';
-import { IntermediateParams } from './schema-alpha';
 
 export interface AppSyncStackProps {
     config: UserPoolConfig
     tables: (DbTable | SchemaTable)[]
-    schemaTypes?: IntermediateParams
+    schemaTypes?: GraphQlTypeList
 }
 
 export class AppSyncStack {

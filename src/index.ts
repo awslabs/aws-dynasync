@@ -15,6 +15,11 @@ export class Dynasync extends Resource {
         tables:[],
         types: {}
     }
+
+    public static init(scope:Construct, id: string, props?:DynasyncProps): Dynasync {
+        return new Dynasync(scope,id,props);
+    }
+
     constructor(
         protected scope: Construct, 
         protected id: string, 
@@ -28,11 +33,14 @@ export class Dynasync extends Resource {
             if (!existsSync($props.configFile)) throw new Error(`Config file ${$props.configFile} does not exist`);
             if (!/json/.test(extname($props.configFile)))  throw new Error(`File at ${$props.configFile} is not JSON file`);
         }
-        const configFilePath = $props.configFile || join(process.cwd(), 'tables.json');
+        const configFilePath = $props.configFile || join(process.cwd(), 'dynasync.json');
         if (existsSync(configFilePath)) {
             this.$config = JSON.parse(readFileSync(configFilePath).toString());
         }
         const properties = this.props;
+        if (!properties.tables?.length) {
+            throw new Error("No tables provided. Cannot build API and Database without tables. Please configure parameters or provide 'dynasync.json' config file");
+        }
         const userPool =  properties.userPool || new UserPool(scope, `${id}UserPool`);
         this.appsync = new AppSyncStack(scope, `${id}AppSyncStack`, {
             config: {

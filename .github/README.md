@@ -9,6 +9,7 @@
     [Config File](#config-file)
     [Index.ts](#indexts)
     [Schema.graphql](#schemagraphql)
+    [DynamoDB Tables](#dynamodb-tables)
 - [Interfaces](#interfaces)
     [DynasyncProps](#dynasyncprops)
     [SchemaTable](#schematable)
@@ -381,6 +382,9 @@ app.synth()
         SAP
     }
 ```
+
+### DynamoDB Tables
+![DynamoDB Tables](/assets/images/db.png)
 
 ## Cognito User Pools
 If you don't supply a Cognito User Pool when instantiating the `Dynasync` object, a basic one will be created. But since you'll most likely want to configure the User Pool yourself, it's highly advised to pass your own *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html) as an argument:

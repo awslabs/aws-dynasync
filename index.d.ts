@@ -1,1 +1,1 @@
-declare module 'aws-quick-api-config';
+declare module 'aws-dynasync';

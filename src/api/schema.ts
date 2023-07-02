@@ -5,14 +5,16 @@ import {
 } from 'aws-cdk-lib/aws-appsync';
 import { DbTable } from '../db/table';
 import { 
-    SchemaAlpha,
-    IntermediateParams, 
+    SchemaAlpha
+} from './schema-alpha';
+import { 
+    SchemaObject,
+    GraphQlTypeList, 
     IntermediateType, 
     IntermediateTypeProps, 
     IntermediateTypes, 
     SchemaFields
-} from './schema-alpha';
-import { SchemaObject } from '../types';
+} from '../types';
 import { 
     GraphqlType, 
     BaseTypeOptions, 
@@ -39,7 +41,7 @@ export class AppSyncSchema implements ISchema {
     protected customTypes:string[] = []
     protected types:IntermediateTypes = {}
 
-    constructor(types?:IntermediateParams) {
+    constructor(types?:GraphQlTypeList) {
         if (types && Object.keys(types).length) this.initTypes(types);
     }
 
@@ -209,7 +211,7 @@ export class AppSyncSchema implements ISchema {
         }
     }
 
-    initTypes(types:IntermediateParams = {}) {
+    initTypes(types:GraphQlTypeList = {}) {
         for (let intermediateType in types) {
             if (types.hasOwnProperty(intermediateType)) {
                 const keys = Object.keys(types[intermediateType]);

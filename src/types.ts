@@ -6,15 +6,15 @@ import { SchemaGlobalIndex } from "./key/global"
 import { SchemaLocalIndex } from "./key/local"
 import { ResourceProps } from "aws-cdk-lib"
 import { IUserPool } from "aws-cdk-lib/aws-cognito"
-import {
-    IntermediateParams
-} from './api/schema-alpha';
 import { DbTable } from "./db/table"
+import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha"
+import { Resolver } from "aws-cdk-lib/aws-appsync"
+
 export interface DynasyncProps extends ResourceProps {
     userPool?: IUserPool
     tables?: (DbTable | SchemaTable)[]
     configFile?: string
-    types?: IntermediateParams
+    types?: GraphQlTypeList
     userPoolRegex?: string
     userPoolDeny?: boolean
 }
@@ -63,6 +63,14 @@ export interface SchemaGlobal {
     capacity?: Capacity
 }
 
+export interface GraphQlTypeList {
+    types?: IntermediateTypeList
+    interfaces?: IntermediateTypeList
+    inputs?: IntermediateTypeList
+    unions?:  {[name:string]: (string | IIntermediateType)[]}
+    enums?:  {[name:string]: string[]}
+}
+
 export interface SchemaLocal {
     sortKey: string | KeyInstance
     include?: string[]
@@ -95,3 +103,32 @@ export type SchemaObject = Record<string, string>
 export type GraphType = 'id' | 'string' | 'int' | 'float' | 'boolean' | 
 'awsDate' | 'awsTime' | 'awsDateTime' | 'awsTimestamp' | 'awsEmail' | 
 'awsJson' | 'awsUrl' | 'awsPhone' | 'awsIpAddress' | 'intermediate'
+
+export interface IntermediateTypes {
+    [name:string]: IIntermediateType
+}  
+
+export type IntermediateType = 'type' | 'input' | 'interface' | 'union' | 'enum';
+
+export interface SchemaFields {
+    [name:string]: IField
+} 
+
+export interface IntermediateTypeBase {
+    directives?: Directive[]
+    interfaceTypes?: InterfaceType[]
+    intermediateType?: IIntermediateType
+    resolvers?: Resolver[]
+}
+
+export interface IntermediateTypeProps extends IntermediateTypeBase {
+    definition: SchemaObject
+}
+
+export interface IntermediateTypeOptions extends IntermediateTypeBase {
+    definition: SchemaFields
+}
+
+export interface IntermediateTypeList {
+    [name:string]: IntermediateTypeProps | SchemaObject
+}

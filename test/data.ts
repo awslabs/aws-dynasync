@@ -1,6 +1,6 @@
 import { join } from "path";
 
-export const pathToJson = join(__dirname, 'tables.json');
+export const pathToJson = join(__dirname, 'dynasync.json');
 
 export const  passedTypes =  {               
     types: {

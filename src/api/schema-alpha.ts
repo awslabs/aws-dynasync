@@ -1,53 +1,12 @@
-import { IGraphqlApi, ISchemaConfig, Resolver } from "aws-cdk-lib/aws-appsync";
+import { IGraphqlApi, ISchemaConfig } from "aws-cdk-lib/aws-appsync";
 import { 
     GraphqlApi as GraphqlApiAlpha, 
     Field, 
     IIntermediateType, 
     ObjectType, 
     ResolvableField, 
-    Directive,
-    InterfaceType,
-    IField
 } from "@aws-cdk/aws-appsync-alpha";
 import { Lazy } from "aws-cdk-lib";
-import { SchemaObject } from "../types";
-
-export interface IntermediateTypes {
-    [name:string]: IIntermediateType
-}  
-
-export type IntermediateType = 'type' | 'input' | 'interface' | 'union' | 'enum';
-
-export interface IntermediateParams {
-    types?: IntermediateTypeList
-    interfaces?: IntermediateTypeList
-    inputs?: IntermediateTypeList
-    unions?:  {[name:string]: (string | IIntermediateType)[]}
-    enums?:  {[name:string]: string[]}
-}
-
-export interface SchemaFields {
-    [name:string]: IField
-} 
-
-export interface IntermediateTypeBase {
-    directives?: Directive[]
-    interfaceTypes?: InterfaceType[]
-    intermediateType?: IIntermediateType
-    resolvers?: Resolver[]
-}
-
-export interface IntermediateTypeProps extends IntermediateTypeBase {
-    definition: SchemaObject
-}
-
-export interface IntermediateTypeOptions extends IntermediateTypeBase {
-    definition: SchemaFields
-}
-
-export interface IntermediateTypeList {
-    [name:string]: IntermediateTypeProps | SchemaObject
-}
 
 /**
  * Class based on aws-appsync alpha Schema class,
