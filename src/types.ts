@@ -10,7 +10,7 @@ import {
     IntermediateParams
 } from './api/schema-alpha';
 import { DbTable } from "./db/table"
-export interface SchemaSyncProps extends ResourceProps {
+export interface DynaSyncProps extends ResourceProps {
     userPool?: IUserPool
     tables?: (DbTable | SchemaTable)[]
     configFile?: string

@@ -1,5 +1,5 @@
 import { App, Stack } from 'aws-cdk-lib';
-import { SchemaSyncApi } from '../../src'; 
+import { DynaSync } from '../../src'; 
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { pathToJson, integPassedTypes } from '../data';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
@@ -17,7 +17,7 @@ const userPool = new UserPool(stack, "UserPool", {
 });
 
 
-const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+const sync = new DynaSync(stack, 'DynaSyncConstruct', {
   userPool,
   configFile: pathToJson,
   ...integPassedTypes

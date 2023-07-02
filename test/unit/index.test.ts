@@ -1,5 +1,5 @@
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { SchemaSyncApi } from '../../src'; 
+import { DynaSync } from '../../src'; 
 import { App, Stack } from 'aws-cdk-lib';
 import { join } from 'path';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
@@ -15,7 +15,7 @@ let app:App,
     userPool: UserPool,
     template: Template;
 
-describe('SchemaSyncApi', () => {
+describe('DynaSync', () => {
     beforeEach(() => {
         app = new App();
         stack = new Stack(app, "TestStack");
@@ -25,7 +25,7 @@ describe('SchemaSyncApi', () => {
     });
 
     it('Creates default construct', () => {
-        new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+        new DynaSync(stack, 'DynaSyncConstruct', {
             userPool,
             configFile: pathToJson
         });
@@ -37,7 +37,7 @@ describe('SchemaSyncApi', () => {
     });
 
     it('Creates construct with userPoolDeny', () => {
-        new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+        new DynaSync(stack, 'DynaSyncConstruct', {
             userPool,
             configFile: pathToJson,
             userPoolDeny: true
@@ -52,7 +52,7 @@ describe('SchemaSyncApi', () => {
     it('Throws when configFile does not exist', () => {
         const fakePath = join(__dirname, 'tablets.json');
         expect(() => {
-            new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: fakePath
             });
@@ -63,7 +63,7 @@ describe('SchemaSyncApi', () => {
     it('Throws when configFile is wrong type', () => {
         const fakePath = join(__dirname, '..', 'schema.ts');
         expect(() => {
-            new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: fakePath
             });
@@ -72,7 +72,7 @@ describe('SchemaSyncApi', () => {
     });
 
     it('Accepts table arguments outside of config file', () => {
-        new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+        new DynaSync(stack, 'DynaSyncConstruct', {
             userPool,
             tables: tables as unknown as SchemaTable[]
         });
@@ -81,7 +81,7 @@ describe('SchemaSyncApi', () => {
     });
 
     it('Works when passing DbTable', () => {
-        new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+        new DynaSync(stack, 'DynaSyncConstruct', {
             userPool,
             tables: [
                 new DbTable(stack, {
@@ -109,7 +109,7 @@ describe('CloudFormation Template', () => {
         userPool = new UserPool(stack, "UserPool", {
             userPoolName: 'SyncPool'
         });
-        new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+        new DynaSync(stack, 'DynaSyncConstruct', {
             userPool,
             configFile: pathToJson,
             ...passedTypes

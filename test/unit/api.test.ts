@@ -1,5 +1,5 @@
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { SchemaSyncApi } from '../../src'; 
+import { DynaSync } from '../../src'; 
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { pathToJson, passedTypes } from '../data';
 import { App, Stack } from 'aws-cdk-lib';
@@ -18,7 +18,7 @@ let app:App,
         });
 
         it('Merges config file and arguments', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: pathToJson,
                 ...passedTypes
@@ -31,7 +31,7 @@ let app:App,
         });
 
         it('Gets user pool', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: pathToJson,
                 ...passedTypes
@@ -41,7 +41,7 @@ let app:App,
         });
 
         it('Throws when no partition key in attributes', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: pathToJson,
                 ...passedTypes
@@ -63,7 +63,7 @@ let app:App,
         });
 
         it('Throws when no sort key in attributes', () => {
-                const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+                const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                     userPool,
                     configFile: pathToJson,
                     ...passedTypes
@@ -87,7 +87,7 @@ let app:App,
 
         it('Throws when array is passed and type is neither union nor enum', () => {
             expect(() => {
-                new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+                new DynaSync(stack, 'DynaSyncConstruct', {
                     userPool,
                     configFile: pathToJson,
                     types: {
@@ -102,7 +102,7 @@ let app:App,
         });
 
         it('Can add strings to schema', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: pathToJson,
             });
@@ -114,7 +114,7 @@ let app:App,
         });
 
         it('Can use subscriptions', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool,
                 configFile: pathToJson,
                 tables: [{
@@ -139,7 +139,7 @@ let app:App,
         });
 
         it('Returns empty string when no schema declared', () => {
-            const sync = new SchemaSyncApi(stack, 'SchemaSyncApiConstruct', {
+            const sync = new DynaSync(stack, 'DynaSyncConstruct', {
                 userPool
             });
             const schema = sync.appsync.schema.root.declareSchema();
