@@ -26,15 +26,14 @@ jobs:
         npm install
         npm run build
         npm test
-        - |
-          if [[ ! -f .aws/credentials ]]; then
-              {
-                echo "[default]"
-                echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}"
-                echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}"
-                echo "region=us-east-1"
-              } >> .aws/credentials
-          fi
+        if [[ ! -f .aws/credentials ]]; then
+          {
+            echo "[default]"
+            echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}"
+            echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}"
+            echo "region=us-east-1"
+          } >> .aws/credentials
+        fi
         npm run integ
       env:
           CDK_DEFAULT_ACCOUNT: ${{ secrets.CDK_DEFAULT_ACCOUNT }}
