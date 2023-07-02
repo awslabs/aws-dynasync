@@ -8,6 +8,7 @@ const fn = () => {
         [default]
         aws_access_key_id=${process.env.AWS_ACCESS_KEY_ID}
         aws_secret_access_key=${process.env.AWS_SECRET_ACCESS_KEY}
+        region=${process.env.CDK_DEFAULT_REGION}
     `
     return new Promise((res,rej) => {
         mkdir(path, err => {
