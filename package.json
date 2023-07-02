@@ -16,7 +16,9 @@
     "dynamodb",
     "api",
     "graphql",
-    "schema"
+    "schema",
+    "database", 
+    "appsync-graphql-api"
   ],
   "author": "sguggenh@amazon.com",
   "license": "Apache-2.0",
