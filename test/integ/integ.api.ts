@@ -1,5 +1,5 @@
 import { App, Stack } from 'aws-cdk-lib';
-import { DynaSync } from '../../src'; 
+import { Dynasync } from '../../src'; 
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { pathToJson, integPassedTypes } from '../data';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
@@ -17,7 +17,7 @@ const userPool = new UserPool(stack, "UserPool", {
 });
 
 
-const sync = new DynaSync(stack, 'DynaSyncConstruct', {
+const sync = new Dynasync(stack, 'DynasyncConstruct', {
   userPool,
   configFile: pathToJson,
   ...integPassedTypes

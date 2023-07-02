@@ -1,6 +1,6 @@
 import { Resource } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { DynaSyncProps } from "./types";
+import { DynasyncProps } from "./types";
 import { readFileSync, existsSync  } from 'fs';
 import { extname, join } from "path";
 import { DbTable } from "./db/table";
@@ -8,17 +8,17 @@ import { AppSyncStack } from "./api";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
 import { UserPoolDefaultAction } from "aws-cdk-lib/aws-appsync";
 
-export class DynaSync extends Resource {
+export class Dynasync extends Resource {
     public readonly tables: DbTable[];
     public readonly appsync: AppSyncStack;
-    protected $config: DynaSyncProps = {
+    protected $config: DynasyncProps = {
         tables:[],
         types: {}
     }
     constructor(
         protected scope: Construct, 
         protected id: string, 
-        protected $props: DynaSyncProps = {
+        protected $props: DynasyncProps = {
             tables:[],
             types: {}
         }
@@ -46,7 +46,7 @@ export class DynaSync extends Resource {
         this.tables = this.appsync.tables;
     }
 
-    get props(): DynaSyncProps {
+    get props(): DynasyncProps {
         return this.mergeProps(this.$config, this.$props);
     }
 
@@ -56,7 +56,7 @@ export class DynaSync extends Resource {
         return this.appsync.schema.root.getDefinition(this.appsync.api);
     }
 
-    private mergeProps(config: DynaSyncProps, props: DynaSyncProps): DynaSyncProps {
+    private mergeProps(config: DynasyncProps, props: DynasyncProps): DynasyncProps {
         return {
             ...config,
             ...props,
