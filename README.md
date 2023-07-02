@@ -2,6 +2,8 @@
 
 ![Build](https://img.shields.io/github/actions/workflow/status/awslabs/aws-dynasync/release.yml?style=plastic)
 
+`AWS Dynasync` allows you to create an AWS AppSync GraphQL Api and a set of Amazon DynamoDB tables with one command. Automate the building and provisioning of a GraphQL API using a single config file with AWS AppSync and Amazon DynamoDb to store the data. The process defines the data tables and GraphQl types to be used. Then using the AWS CDK all of the tables are created, all of the queries and mutations are generated, and all of the data sources connected to have a fully functioning API.
+
 - [Installation](#installation)
 - [Basic Implementation](#basic-implementation)
 - [Custom Types](#custom-types)
@@ -20,8 +22,6 @@
 - [Default API Properties](#default-api-props)
 - [Security](#security)
 - [License](#license)
-
-`AWS Dynasync` allows you to create an AWS AppSync GraphQL Api and a set of Amazon DynamoDB tables with one command. Automate the building and provisioning of a GraphQL API using a single config file with AWS AppSync and Amazon DynamoDb to store the data. The process defines the data tables and GraphQl types to be used. Then using the AWS CDK all of the tables are created, all of the queries and mutations are generated, and all of the data sources connected to have a fully functioning API.
 
 ## Installation
 ```
