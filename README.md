@@ -420,7 +420,8 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 - **deleteTablesWithStack** *(default: false)*: *boolean* - If true, sets the `UpdateReplacePolicy` for all DynamoDB tables to `Delete` so that they will be deleted if the cloudformation stack is deleted.
 - **userPoolRegex** *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
 - **userPoolDeny** *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
-- **tableProps** *(default: [Default API Props](#default-api-props))* - Override default properties of the CDK Appsync GraphQLAPI construct used to create the API
+- **apiProps** *(default: [Default API Props](#default-api-props))* - Override default properties of the CDK Appsync GraphQLAPI construct used to create the API
+- **tableProps** *(default: [Default Table Props](#default-table-props))* - Override default properties of the CDK DynamoDB Table construct used to create your database tables
 
 ### SchemaTable
 - **tableName** **(required)**: *string* - The name of the DynamoDB table to be created
@@ -434,7 +435,7 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 - **subscription** *(default: false)*: *boolean* - If true, API will create GraphQL subscriptions for the table.
 - **query** *(default: true)*: *boolean* - If true, API will create GraphQL queries for the table.
 - **mutation** *(default: true)*: *boolean* - If true, API will create GraphQL mutations for the table.
-- **tableProps** *(default: [Default Table Props](#default-table-props))* - Override default properties of the CDK DynamoDB Table construct used to create the tables
+- **tableProps** *(default: [Default Table Props](#default-table-props))* - Override default properties of the CDK DynamoDB Table construct used to create your database tables
 
 ### SchemaGlobal
 - **partitionKey** **(required)**: *string* - The attribute name of the secondary index's partition key.
