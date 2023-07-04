@@ -291,43 +291,43 @@ app.synth()
     }
     
     type Query {
-        scanDog: [Dog]
-        getDogByDogId(dogId: ID!): Dog
-        listDogByName(name: String): [Dog]
-        listDogByAge(age: Int!): [Dog]
-        listDogByBreed(breed: String!): [Dog]
-        listDogByIsHousebroken(isHousebroken: Boolean): [Dog]
-        scanCat: [Cat]
         getCatByCatId(catId: ID!): Cat
-        listCatByName(name: String): [Cat]
-        listCatByAge(age: Int!): [Cat]
-        listCatByBreed(breed: String!): [Cat]
-        listCatByIsHousebroken(isHousebroken: Boolean): [Cat]
+        getDogByDogId(dogId: ID!): Dog
         getEventByEventId(eventId: ID!): Event
-        listEventByEventName(eventName: String!): [Event]
         getEventByEventNameAndStartTime(eventName: String! startTime: AWSTimestamp): Event
-        scanEventSignup: [EventSignup]
-        getEventSignupByEventIdAndDogId(eventId: String!): EventSignup
-        listEventSignupByEventId(eventId: String!): [EventSignup]
-        listEventSignupByDogId(dogId: String!): [EventSignup]
-        getEventSignupByDogIdAndEventId(dogId: String! eventId: String!): EventSignup
-        listEventSignupByCategory(category: String): [EventSignup]
         getEventSignupByCategoryAndDogId(category: String dogId: String!): EventSignup
         getEventSignupByEventIdAndCategory(eventId: String! category: String): EventSignup
+        getEventSignupByEventIdAndDogId(eventId: String!): EventSignup
+        getEventSignupByDogIdAndEventId(dogId: String! eventId: String!): EventSignup
+        listCatByAge(age: Int!): [Cat]
+        listCatByBreed(breed: String!): [Cat]        
+        listCatByIsHousebroken(isHousebroken: Boolean): [Cat]
+        listCatByName(name: String): [Cat]
+        listDogByAge(age: Int!): [Dog]
+        listDogByBreed(breed: String!): [Dog]        
+        listDogByIsHousebroken(isHousebroken: Boolean): [Dog]
+        listDogByName(name: String): [Dog]
+        listEventSignupByEventId(eventId: String!): [EventSignup]
+        listEventByEventName(eventName: String!): [Event]
+        listEventSignupByCategory(category: String): [EventSignup]
+        listEventSignupByDogId(dogId: String!): [EventSignup]
+        scanCat: [Cat]
+        scanDog: [Dog]
+        scanEventSignup: [EventSignup]
     }
         
     type Mutation {
-        createDog(input: DogInput): Dog
-        putDog(dogId: ID! input: DogInput): Dog
-        deleteDog(dogId: ID!): Dog
         createCat(input: CatInput): Cat
-        putCat(catId: ID! input: CatInput): Cat
-        deleteCat(catId: ID!): Cat
+        createDog(input: DogInput): Dog                
         createEvent(input: EventInput): Event
-        putEvent(eventId: ID! input: EventInput): Event
+        deleteCat(catId: ID!): Cat
+        deleteDog(dogId: ID!): Dog
         deleteEvent(eventId: ID!): Event
-        putEventSignup(eventId: String! dogId: String! input: EventSignupInput): EventSignup
         deleteEventSignup(eventId: String! dogId: String!): EventSignup
+        putCat(catId: ID! input: CatInput): Cat
+        putDog(dogId: ID! input: DogInput): Dog
+        putEvent(eventId: ID! input: EventInput): Event
+        putEventSignup(eventId: String! dogId: String! input: EventSignupInput): EventSignup
     }
         
     type Cat {
