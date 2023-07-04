@@ -135,7 +135,7 @@ But if you want to declare additional GraphQL types, inputs, interfaces, unions,
 ```
 
 ## Mapping the DB to the API
-Here is an example of how `Dynasync` takes a single config file and maps it to an AppSync API:
+Here is an example of how `Dynasync` takes a single config file and uses it to map DynamoDB tables to an AppSync API:
 
 ### Config File
 ```json
