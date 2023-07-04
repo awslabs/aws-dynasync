@@ -388,6 +388,8 @@ app.synth()
         SAP
     }
 ```
+### DynamoDB Tables
+![DynamoDB Tables](/assets/images/db.png)
 
 ## Delete Tables With Stack
 Unlike most resources, AWS CDK `DynamoDB` tables are set to be retained by default when their `CloudFormation` stack is deleted. In most cases this is preferable to ensure that data is not lost by mistake, but it can also cause issues during the development process and in lower environments when stacks are often deleted and run again.
@@ -412,9 +414,6 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
   userPool
 });
 ```
-
-### DynamoDB Tables
-![DynamoDB Tables](/assets/images/db.png)
 
 ## Interfaces
 
