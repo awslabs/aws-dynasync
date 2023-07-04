@@ -55,7 +55,6 @@ export class AppSyncStack {
 
     protected getApi(schema: ISchema, userPoolConfig: UserPoolConfig, apiProps?: AppsyncApiProps): GraphqlApi {
         const nm = getName(this.id, 'GraphQlApi');
-        console.log("API PROPS", apiProps);
         return new GraphqlApi(this.scope, nm, {
             name: nm,
             schema,
