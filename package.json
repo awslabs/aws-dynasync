@@ -10,7 +10,7 @@
     "test-build": "tsc --project tsconfig.test.json",
     "integ": "npm run test-build && integ-runner",
     "docs": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme src/export.ts --out wiki",
-    "postdocs": "cp README.md ./wiki/Home.md"
+    "postdocs": "cp .github/README.md ./wiki/Home.md"
   },
   "keywords": [
     "AWS",

@@ -13,6 +13,7 @@ import { IStream } from "aws-cdk-lib/aws-kinesis"
 
 export interface DynasyncProps extends ResourceProps {
     userPool?: IUserPool
+    
     tables?: (DbTable | SchemaTable)[]
     configFile?: string
     types?: GraphQlTypeList
