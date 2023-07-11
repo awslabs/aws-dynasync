@@ -5,8 +5,8 @@ import { readFileSync, existsSync  } from 'fs';
 import { extname, join } from "path";
 import { DbTable } from "./db/table";
 import { AppSyncStack } from "./api";
+import { AuthorizationConfig, AuthorizationMode, AuthorizationType, UserPoolDefaultAction } from "aws-cdk-lib/aws-appsync";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
-import { UserPoolDefaultAction } from "aws-cdk-lib/aws-appsync";
 
 export class Dynasync extends Resource {
     public readonly tables: DbTable[];
@@ -41,17 +41,24 @@ export class Dynasync extends Resource {
         if (!properties.tables?.length) {
             throw new Error("No tables provided. Cannot build API and Database without tables. Please configure parameters or provide 'dynasync.json' config file");
         }
-        const userPool =  properties.userPool || new UserPool(scope, `${id}UserPool`);
+        let defaultAuthorization: AuthorizationMode | undefined;
+        if (properties.userPool || !properties.auth?.length) {
+            defaultAuthorization = this.getUserPoolAuthMode(properties);
+        } else {
+            defaultAuthorization = (properties.auth || []).shift();
+        } 
+        let additionalAuthorizationModes: AuthorizationMode[] | undefined = properties.auth?.length ? 
+            properties.auth : undefined;
+        const config = {
+            defaultAuthorization,
+            additionalAuthorizationModes
+        }
         if (properties.deleteTablesWithStack) {
             if (!properties.tableProps) properties.tableProps = {};
             properties.tableProps.removalPolicy = RemovalPolicy.DESTROY;
         }
         this.appsync = new AppSyncStack(scope, `${id}AppSyncStack`, {
-            config: {
-                userPool,
-                appIdClientRegex: properties.userPoolRegex,
-                defaultAction: properties.userPoolDeny ? UserPoolDefaultAction.DENY : UserPoolDefaultAction.ALLOW
-            },
+            config,
             tables: properties.tables || [],
             schemaTypes: properties.types || {},
             apiProps: properties.apiProps,
@@ -99,6 +106,17 @@ export class Dynasync extends Resource {
                     ...(config.types?.inputs || {}),
                     ...(props.types?.inputs || {})
                 }
+            }
+        }
+    }
+
+    private getUserPoolAuthMode(properties: DynasyncProps): AuthorizationMode {
+        return {
+            authorizationType: AuthorizationType.USER_POOL,
+            userPoolConfig: {
+                userPool: properties.userPool || new UserPool(this.scope, `${this.id}UserPool`),
+                appIdClientRegex: properties.userPoolRegex,
+                defaultAction: properties.userPoolDeny ? UserPoolDefaultAction.DENY : UserPoolDefaultAction.ALLOW
             }
         }
     }

@@ -17,7 +17,7 @@ import { SchemaLocalIndex } from '../key/local';
 import { SchemaGlobalIndex } from '../key/global';
 import { capitalize } from '../util';
 import { KeyInstance } from '../key/instance';
-import { DbApi } from './api';
+import { DbApi } from './db-api';
 import { GraphqlApi } from 'aws-cdk-lib/aws-appsync';
 import { AppSyncSchema } from '../api/schema';
 

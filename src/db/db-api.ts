@@ -8,7 +8,7 @@ import {
     Values 
 } from 'aws-cdk-lib/aws-appsync';
 import { Construct } from "constructs";
-import { DbTable } from "../db/table";
+import { DbTable } from "./table";
 import { AppSyncSchema } from '../api/schema';
 import { capitalize, validateTable } from '../util';
 export class DbApi {

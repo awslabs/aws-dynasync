@@ -420,11 +420,12 @@ const sync = new Dynasync(stack, 'DynasyncConstruct', {
 ### DynasyncProps
 - **tables** **(required)**: *[SchemaTable](#schematable)[]* - An array of [SchemaTable](#schematable) objects that will be used first to construct the Amazon DynamoDB tables, then will connect those tables to the Aws Appsync GraphQL API.
 - **configFile** *(default: 'dynasync.json')*: *string* - Custom path to config file
-- **userPool** *(default: a basic user pool will be created)*: *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html)* - The Cognito User Pool that the AppSync API will use for authentication and authorization
+- **userPool** *(default: if `auth` exists,`undefined`; otherwise a basic user pool will be created)*: *[IUserPool](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.IUserPool.html)* - The Cognito User Pool that the AppSync API will use for authentication and authorization
 - **types** *(default: undefined)*: *[GraphQlTypeList](#graphqltypelist)* - Custom types in addition to the types and inputs created for each `DynamoDB` table
 - **deleteTablesWithStack** *(default: false)*: *boolean* - If true, sets the `UpdateReplacePolicy` for all DynamoDB tables to `Delete` so that they will be deleted if the cloudformation stack is deleted.
-- **userPoolRegex** *(default: undefined)*: string - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
-- **userPoolDeny** *(default: false)*: boolean - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
+- **auth** *(default: undefined)*: *[AuthorizationMode[]](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_appsync.AuthorizationMode.html)* - Optional array of `AuthorizationModes` to use for authentication to the AppSync API. If a value for `userPool` is supplied, that will be the default authorization mode and these will be the `additionalAuthorizationModes`. Otherwise the first item in this array will be the default authorization mode.
+- **userPoolRegex** *(default: undefined)*: *string* - The value passed to the user pool config's [appIdClientRegex](https://docs.aws.amazon.com/appsync/latest/APIReference/API_UserPoolConfig.html) field
+- **userPoolDeny** *(default: false)*: *boolean* - If true, the Cognito User Pool's default action will be `DENY` rather than `ALLOW`
 - **apiProps** *(default: [Default API Props](#default-api-props))* - Override default properties of the CDK Appsync GraphQLAPI construct used to create the API
 - **tableProps** *(default: [Default Table Props](#default-table-props))* - Override default properties of the CDK DynamoDB Table construct used to create your database tables
 
