@@ -8,7 +8,9 @@
     "watch": "jest --watch --ci --reporters=default --coverage \".*\\..*\"",
     "build": "tsc --project tsconfig.build.json",
     "test-build": "tsc --project tsconfig.test.json",
-    "integ": "npm run test-build && integ-runner"
+    "integ": "npm run test-build && integ-runner",
+    "docs": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme lib/index.ts --out wiki",
+    "postdocs": "cp README.md ./wiki/Home.md"
   },
   "keywords": [
     "AWS",
@@ -29,7 +31,10 @@
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4",
     "@aws-cdk/integ-runner": "^2.77.0-alpha.0",
-    "@aws-cdk/integ-tests-alpha": "^2.77.0-alpha.0"
+    "@aws-cdk/integ-tests-alpha": "^2.77.0-alpha.0",
+    "typedoc": "^0.24.8",
+    "typedoc-github-wiki-theme": "^1.1.0",
+    "typedoc-plugin-markdown": "^3.15.3"
   },
   "dependencies": {
     "@aws-cdk/aws-appsync-alpha": "2.52.1-alpha.0",
