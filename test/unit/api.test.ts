@@ -6,6 +6,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { DbTable } from '../../src/db/table';
 import { AppSyncStack } from '../../src/api';
 import { BillingMode } from 'aws-cdk-lib/aws-dynamodb';
+import { AuthorizationType } from 'aws-cdk-lib/aws-appsync';
 
 let app:App,
     stack:Stack,
@@ -39,7 +40,7 @@ let app:App,
                 ...passedTypes
             });
             template = Template.fromStack(stack);
-            expect(sync.appsync.userPool).toBeInstanceOf(UserPool);
+            expect(sync.appsync.config.defaultAuthorization?.userPoolConfig?.userPool).toBeInstanceOf(UserPool);
         });
 
         it('Throws when no partition key in attributes', () => {
@@ -103,6 +104,22 @@ let app:App,
             }).toThrowError('Only Union and Enum types can be passed as an array, Type: interface');
         });
 
+        it('Can use other auth methods', () => {
+            const sync = new Dynasync(stack, 'DynasyncConstruct', {
+                auth: [{
+                    authorizationType: AuthorizationType.API_KEY,
+                    apiKeyConfig: {
+                        name: "MyAPi"
+                    }
+                }],
+                configFile: pathToJson,
+            });
+            template = Template.fromStack(stack);
+            template.hasResourceProperties("AWS::AppSync::GraphQLApi", {
+                AuthenticationType: "API_KEY"
+            });
+        });
+
         it('Can add strings to schema', () => {
             const sync = new Dynasync(stack, 'DynasyncConstruct', {
                 userPool,
@@ -164,7 +181,12 @@ let app:App,
 
                 new AppSyncStack(stack, "AppSyncStack", {
                     config: {
-                        userPool: new UserPool(stack, 'Pool')
+                        defaultAuthorization: {
+                            authorizationType: AuthorizationType.USER_POOL,
+                            userPoolConfig: {
+                                userPool: new UserPool(stack, 'Pool')
+                            }
+                        }
                     },
                     tables,
                     tableProps: {

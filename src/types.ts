@@ -7,7 +7,7 @@ import { Duration, RemovalPolicy, ResourceProps } from "aws-cdk-lib"
 import { IUserPool } from "aws-cdk-lib/aws-cognito"
 import { DbTable } from "./db/table"
 import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha"
-import { DomainOptions, LogConfig, Resolver } from "aws-cdk-lib/aws-appsync"
+import { AuthorizationMode, DomainOptions, LogConfig, Resolver } from "aws-cdk-lib/aws-appsync"
 import { IKey } from "aws-cdk-lib/aws-kms"
 import { IStream } from "aws-cdk-lib/aws-kinesis"
 
@@ -20,6 +20,7 @@ export interface DynasyncProps extends ResourceProps {
     userPoolDeny?: boolean
     apiProps?: AppsyncApiProps
     tableProps?: DynamoTableProps
+    auth?: AuthorizationMode[]
     deleteTablesWithStack?:boolean
 }
 

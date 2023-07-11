@@ -6,14 +6,12 @@ import { SchemaTable, GraphQlTypeList, AppsyncApiProps, DynamoTableProps } from 
 import { 
     GraphqlApi, 
     ISchema,
-    AuthorizationType,
     DynamoDbDataSource,
-    UserPoolConfig
+    AuthorizationConfig
 } from 'aws-cdk-lib/aws-appsync';
-import { IUserPool } from 'aws-cdk-lib/aws-cognito';
 
 export interface AppSyncStackProps {
-    config: UserPoolConfig
+    config: AuthorizationConfig
     tables: (DbTable | SchemaTable)[]
     schemaTypes?: GraphQlTypeList
     apiProps?: AppsyncApiProps
@@ -53,26 +51,20 @@ export class AppSyncStack {
         this.tables = this.tables.map(table => this.addTableApi(table));
     }
 
-    protected getApi(schema: ISchema, userPoolConfig: UserPoolConfig, apiProps?: AppsyncApiProps): GraphqlApi {
+    get config(): AuthorizationConfig {
+        return this.props.config;
+    }
+
+    protected getApi(schema: ISchema, authorizationConfig: AuthorizationConfig, apiProps?: AppsyncApiProps): GraphqlApi {
         const nm = getName(this.id, 'GraphQlApi');
         return new GraphqlApi(this.scope, nm, {
             name: nm,
             schema,
-            authorizationConfig: {
-                defaultAuthorization: {
-                    authorizationType: AuthorizationType.USER_POOL,
-                    userPoolConfig
-                }
-            },
+            authorizationConfig,
             xrayEnabled: true,
             ...(apiProps || {})
         });
     }
-
-    get userPool(): IUserPool {
-        return this.props.config.userPool
-    }
-
 
     addTableSchema($table:DbTable): DbTable | false {
         const table = this.schema.addTable($table);
