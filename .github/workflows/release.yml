@@ -46,10 +46,12 @@ jobs:
       uses: actions/checkout@v3
     - name: Build
       run: |
-        npm ci
+        npm install
         npm run docs
     - name: Update
-      run: ./.github/scripts/update-wiki.sh
+      run: |
+        chmod +x ./scripts/update-wiki.sh
+        ./scripts/update-wiki.sh
       env:
         WIKI_DIR: 'wiki'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
