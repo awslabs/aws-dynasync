@@ -3,8 +3,8 @@ import { AppSyncSchema } from './schema';
 import { getName, validateTable } from '../util';
 import { DbTable } from '../db/table';
 import { SchemaTable, GraphQlTypeList, AppsyncApiProps, DynamoTableProps } from '../types';
-import { 
-    GraphqlApi, 
+import {
+    GraphqlApi,
     ISchema,
     DynamoDbDataSource,
     AuthorizationConfig
@@ -23,10 +23,10 @@ export class AppSyncStack {
     schema: AppSyncSchema
     tables: DbTable[] = []
     data: DynamoDbDataSource[] = [];
-    
+
     constructor(
-        public scope: Construct, 
-        protected id: string, 
+        public scope: Construct,
+        protected id: string,
         private props: AppSyncStackProps
     ) {
         this.schema = new AppSyncSchema();

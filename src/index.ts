@@ -5,7 +5,7 @@ import { readFileSync, existsSync  } from 'fs';
 import { extname, join } from "path";
 import { DbTable } from "./db/table";
 import { AppSyncStack } from "./api";
-import { AuthorizationConfig, AuthorizationMode, AuthorizationType, UserPoolDefaultAction } from "aws-cdk-lib/aws-appsync";
+import { AuthorizationConfig, AuthorizationMode, AuthorizationType, GraphqlApi, UserPoolDefaultAction } from "aws-cdk-lib/aws-appsync";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
 
 export class Dynasync extends Resource {
@@ -20,9 +20,16 @@ export class Dynasync extends Resource {
         return new Dynasync(scope,id,props);
     }
 
+    /**
+     * {@link GraphqlApi} created by Dynasync
+     */
+    get api(): GraphqlApi {
+        return this.appsync.api;
+    }
+
     constructor(
-        protected scope: Construct, 
-        protected id: string, 
+        protected scope: Construct,
+        protected id: string,
         protected $props: DynasyncProps = {
             tables:[],
             types: {}
@@ -46,10 +53,10 @@ export class Dynasync extends Resource {
             defaultAuthorization = this.getUserPoolAuthMode(properties);
         } else {
             defaultAuthorization = (properties.auth || []).shift();
-        } 
-        let additionalAuthorizationModes: AuthorizationMode[] | undefined = properties.auth?.length ? 
+        }
+        let additionalAuthorizationModes: AuthorizationMode[] | undefined = properties.auth?.length ?
             properties.auth : undefined;
-        const config = {
+        const config: AuthorizationConfig = {
             defaultAuthorization,
             additionalAuthorizationModes
         }

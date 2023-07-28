@@ -6,7 +6,7 @@ import { SchemaLocalIndex } from "./key/local"
 import { Duration, RemovalPolicy, ResourceProps } from "aws-cdk-lib"
 import { IUserPool } from "aws-cdk-lib/aws-cognito"
 import { DbTable } from "./db/table"
-import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha"
+import { Directive, IField, IIntermediateType, InterfaceType } from "@aws-cdk/aws-appsync-alpha";
 import { AuthorizationMode, DomainOptions, LogConfig, Resolver } from "aws-cdk-lib/aws-appsync"
 import { IKey } from "aws-cdk-lib/aws-kms"
 import { IStream } from "aws-cdk-lib/aws-kinesis"
@@ -105,25 +105,25 @@ export interface DynamoTableProps {
 export type DynamoAttribute = "B" | "S" | "N";
 
 export interface DynamoAttributes {
-    [ name: string ]: DynamoAttribute 
+    [ name: string ]: DynamoAttribute
 }
 
 export type SchemaObject = Record<string, string>
 
 
-export type GraphType = 'id' | 'string' | 'int' | 'float' | 'boolean' | 
-'awsDate' | 'awsTime' | 'awsDateTime' | 'awsTimestamp' | 'awsEmail' | 
+export type GraphType = 'id' | 'string' | 'int' | 'float' | 'boolean' |
+'awsDate' | 'awsTime' | 'awsDateTime' | 'awsTimestamp' | 'awsEmail' |
 'awsJson' | 'awsUrl' | 'awsPhone' | 'awsIpAddress' | 'intermediate'
 
 export interface IntermediateTypes {
     [name:string]: IIntermediateType
-}  
+}
 
 export type IntermediateType = 'type' | 'input' | 'interface' | 'union' | 'enum';
 
 export interface SchemaFields {
     [name:string]: IField
-} 
+}
 
 export interface IntermediateTypeBase {
     directives?: Directive[]
